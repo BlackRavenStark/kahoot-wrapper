@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahoot Personnalisé</title>
+    <style>
+        body {
+            background-color: #121212; /* Fond sombre */
+            margin: 0;
+            overflow: hidden;
+        }
+        #iframe-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="iframe-container">
+    <iframe id="kahoot" src="https://kahoot.it/" onload="modifyIframe()"></iframe>
+</div>
+
+<script>
+    function modifyIframe() {
+        let iframe = document.getElementById("kahoot");
+
+        // Vérifie que l'iframe est bien chargée
+        iframe.onload = function () {
+            let iframeDocument = iframe.contentWindow.document;
+            
+            // Supprime certains éléments (exemple : header, pub, etc.)
+            let elementsToRemove = [
+                ".header", // Exemple : classe CSS de l'en-tête
+                ".footer", // Exemple : classe CSS du bas de page
+                "#some-ad" // Exemple : un bloc pub
+            ];
+
+            elementsToRemove.forEach(selector => {
+                let el = iframeDocument.querySelector(selector);
+                if (el) el.remove();
+            });
+
+            // Personnalisation du style
+            let style = iframeDocument.createElement("style");
+            style.innerHTML = `
+                body { background-color: black !important; color: white !important; }
+                h1, h2, h3, p { font-family: Arial, sans-serif !important; }
+            `;
+            iframeDocument.head.appendChild(style);
+        };
+    }
+</script>
+
+</body>
+</html>
